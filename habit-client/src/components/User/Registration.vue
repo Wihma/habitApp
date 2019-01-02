@@ -9,11 +9,10 @@
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-actions>
-
-              <v-btn block dark color="orange">
+              <v-btn block dark color="orange" @click="loginGoogle">
                   Google
               </v-btn>
-              <v-btn block dark color="blue">
+              <v-btn block dark color="blue" @click="loginFacebook">
                   Facebook
               </v-btn>
             </v-card-actions>
@@ -39,7 +38,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-content> 
+  </v-content>
 </template>
 
 <script>
@@ -67,7 +66,15 @@ export default {
   }),
 
   methods: {
-
+    loginGoogle() {
+      console.log('test login google')
+    },
+    loginFacebook() {
+      console.log('test login Facebook')
+    },
+    registerUser() {
+      console.log('test registration')
+    }
   }
 }
 </script>
