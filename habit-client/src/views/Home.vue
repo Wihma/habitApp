@@ -1,13 +1,14 @@
 <template>
-  <HelloWorld />
+  <user-registration></user-registration>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
 
-  export default {
-    components: {
-      HelloWorld
-    }
+import UserRegistration from '../components/User/Registration'
+
+export default {
+  components: {
+    'user-registration': UserRegistration
   }
+}
 </script>
