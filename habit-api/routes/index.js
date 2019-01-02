@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send('indextext');
+  res.send('indextext that i have edited');
 });
 
 module.exports = router;

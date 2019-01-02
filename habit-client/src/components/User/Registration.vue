@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import AuthService from '@/services/Auth'
 export default {
   data: () => ({
     valid: true,
@@ -66,13 +67,16 @@ export default {
   }),
 
   methods: {
-    loginGoogle() {
-      console.log('test login google')
+    loginGoogle () {
+      console.log('test login google');
+      debugger;
+      const response = AuthService.signInGoogle();
+      console.log({'res': response });
     },
-    loginFacebook() {
+    loginFacebook () {
       console.log('test login Facebook')
     },
-    registerUser() {
+    registerUser () {
       console.log('test registration')
     }
   }
