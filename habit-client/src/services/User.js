@@ -1,10 +1,16 @@
 import Api from '@/services/Api'
 
-export default {
-  registerUser() {
-    return Api.post('user')
+export const userService = {
+  registerUser(parameters) {
+    // return Api.post('user', )
+
+    console.log({'service': 'userService', 'parameters': parameters });
+
+    // Api.post('user', params)
+    //   then()
+    return Api.post('user', parameters)
   },
-  getUser() {
-    return Api.get('user', params.id)
+  getUser(parameters) {
+    return Api.get('user', parameters.id)
   }
 }
