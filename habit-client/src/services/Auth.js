@@ -1,7 +1,10 @@
 import Api from '@/services/Api'
 
-export default {
+export const authService = {
+  signInLocal()){
+    return Api().post('')
+  },
   signInGoogle () {
-    return Api.get('auth/google')
+    return Api().get('auth/google')
   }
 }

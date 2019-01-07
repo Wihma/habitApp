@@ -4,6 +4,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
+// i might need axios on the api side
+const axios = require('axios');
+const instance = axios(create{
+  baseUrl: 'http://localhost/api'
+});
+
 // auth specific, i think. At least for now
 const passport = require('passport');
 const cookieSession = require('cookie-session');
@@ -43,5 +49,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+
+app.get('/anything', function(req, res) {
+  con
+});
 
 module.exports = app;

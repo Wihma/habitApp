@@ -1,4 +1,5 @@
 import { userService } from '../services';
+import { authService } from '../services';
 
 const user = {
   _id: '',
@@ -11,9 +12,7 @@ export const users = {
         all:
     },
     actions: {
-        registerUser({ dispatch, commit}) {
-          userService.registerUser(parameters)
-        }
+
     },
     mutations: {
         getAllRequest(state) {

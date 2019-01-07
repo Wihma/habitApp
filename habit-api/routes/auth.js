@@ -2,7 +2,8 @@ const router = require('express').Router();
 const passport = require('passport');
 // Auth login
 router.get('/login', (req, res) => {
-  res.render('login', {user: req.user});
+  // would like to use this for both
+  res.json('you reached the login endpoint');
 });
 
 // Auth logout
@@ -10,6 +11,22 @@ router.get('/logout', (req, res) => {
   // handle with logout
   req.logout();
   res.redirect('/');
+});
+
+router.all('/register', function(req, res, next) {
+  console.log('reached register endpoint');
+
+  return res.send({loginSuccess: true, username: user.username, jwt: 'empty so far'});
+  // passport.authenticate('local-signup', function(err, user, info) {
+  //   if (err) { return next(err); }
+  //   if (!user) {
+  //     return res.send({loginSuccess: false, username: user.username, jwt: 'empty so far'});
+  //   }
+  //   req.logIn(user, function(err) {
+  //     if (err) { return next(err); }
+  //     return res.send({loginSuccess: true, username: user.username, jwt: 'empty so far'});
+  //   });
+  // })(req, res, next);
 });
 
 // Auth with Google

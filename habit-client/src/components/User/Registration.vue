@@ -3,7 +3,7 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4>
-          <v-card class="elevation-12">
+          <!-- <v-card class="elevation-12">
             <v-toolbar dark color="green">
               <v-toolbar-title>Login</v-toolbar-title>
               <v-spacer></v-spacer>
@@ -16,7 +16,7 @@
                   Facebook
               </v-btn>
             </v-card-actions>
-          </v-card>
+          </v-card> -->
           <v-card class="elevation-12">
             <v-toolbar dark color="green">
               <v-toolbar-title>Register</v-toolbar-title>
@@ -28,7 +28,7 @@
                 v-model="valid"
                 lazy-validation
               >
-                <v-text-field
+                <!-- <v-text-field
                   v-model="username"
                   :counter="10"
                   :rules="usernameRules"
@@ -38,7 +38,7 @@
                   name="username"
                   label="Username"
                   type="text"
-                ></v-text-field>
+                ></v-text-field> -->
                 <v-text-field
                   v-model="email"
                   :rules="emailRules"
@@ -82,7 +82,7 @@
                 Register
               </v-btn>
 
-              <v-btn
+              <!-- <v-btn
                 :disabled="!valid"
                 color="success"
                 @click="validate"
@@ -102,7 +102,7 @@
                 @click="resetValidation"
               >
                 Reset Validation
-              </v-btn>
+              </v-btn> -->
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -169,7 +169,7 @@ export default {
           'password': this.password
         })
 
-        this.submitted = true
+        // this.submitted = true
         const { username, email, password } = this
         const { dispatch } = this.$store
         dispatch('authentication/register', { username, email, password })

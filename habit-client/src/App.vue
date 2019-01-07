@@ -1,26 +1,18 @@
 <template>
   <v-app>
-
-    <v-toolbar >
-        <v-toolbar-title>{{ appTitle }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-
-        <v-btn v-if="status.isLoggedIn" icon>
-          <v-icon>person</v-icon>
-        </v-btn>
-        <v-btn v-if="!status.isLoggedIn">
-          skapa ett konto
-        </v-btn>
-    </v-toolbar>
-
+    <toolbar></toolbar>
     <router-view/>
   </v-app>
 </template>
 
 <script>
+import Toolbar from '@/components/User/Toolbar'
 
 export default {
   name: 'RootComponent',
+  components: {
+    'toolbar': Toolbar
+  },
   data () {
     return {
       appTitle: 'HabitApp',

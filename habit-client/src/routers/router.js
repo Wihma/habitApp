@@ -20,12 +20,37 @@ export const router = new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
+    },
+    {
+      path: '/habitlist',
+      name: 'habitlist',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ '@/views/habit/List.vue')
+    },
+    {
+      path: '/habit',
+      name: 'habit',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ '@/views/habit/Habit.vue')
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('router middleware')
+  // redirect to login page if not logged in and trying to access a restricted page
 
-  next()
+    const publicPages = ['/'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('userjwt');
+
+    console.log(loggedIn);
+    if (authRequired && !loggedIn) {
+      return next('/');
+    }
+
+    next();
 })
