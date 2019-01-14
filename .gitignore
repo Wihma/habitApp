@@ -1,8 +1,4 @@
-#My own ignores
-Blog/Client/node_modules
-Blog/Server/node_modules
-
-
+﻿#My own ignores
 
 £Template stuff
 # Logs
