@@ -1,15 +1,20 @@
 <template>
-  <v-content>
-    <v-container fluid fill-height>
-      <v-layout justify-center>
-        <v-flex xs12 sm8 md4>
+  <div class="habit-edit">
+      <v-container fluid fill-height>
+        <v-layout justify-center>
+          <v-flex xs12 sm8 md4>
           <v-card
             class="mx-auto"
-            style="max-width: 600px;"
-          >
+            style="min-width: 480px; max-width: 600px">
             <v-card-title
+              v-if="isNewHabit"
               class="display-1 font-weight-bold">
-              Edit habit
+              New Habit
+            </v-card-title>
+            <v-card-title
+              v-if="!isNewHabit"
+              class="display-1 font-weight-bold">
+              Edit Habit
             </v-card-title>
             <v-card-text>
               <v-form
@@ -19,7 +24,7 @@
               >
                 <v-text-field
                   v-model="habit.name"
-                  required
+                  :rules="rules.name"
 
                   name="name"
                   label="Name"
@@ -27,63 +32,109 @@
                 ></v-text-field>
                 <v-textarea
                   v-model="habit.description"
+                  :rules="rules.description"
 
                   name="description"
                   label="Description"
                 ></v-textarea>
+                <v-layout row wrap justify-center>
+                  <v-flex xs5>
+                    <v-checkbox
+                      v-model="habit.active"
+                      label="Active"
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs5>
+                    <v-checkbox
+                      v-model="habit.measureTime"
+                      label="Measure Habit Time"
+                      hint="Indicate if time should be measured when a habit is performed"
+                      tooltip
+                    ></v-checkbox>
+                  </v-flex>
+                </v-layout>
               </v-form>
             </v-card-text>
+
+            <v-slide-y-transition>
+              <v-card-text v-show="show">
+                <v-layout row wrap justify-center>
+                  <v-flex xs5>
+                    <v-checkbox
+                      v-model="habit.public"
+                      label="Public for my friends"
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs5>
+                    <v-checkbox
+                      v-model="habit.measuraWUnit"
+                      label="Measure Habit With a Unit"
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs12 sm11>
+                    <v-text-field
+                      v-if="habit.measureUnit"
+                      v-model="habit.unit"
+                      :rules="rules.name"
+                      hint="Unit you want to measure your habit in"
+
+                      name="Unit"
+                      label="Unit"
+                      type="text"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-divider class="mb-5"></v-divider>
+                <v-layout>
+                  <v-flex >
+                    <v-time-picker v-model="habit.time" format="24hr"></v-time-picker>
+                  </v-flex>
+                </v-layout>
+                <v-divider class="mb-3"></v-divider>
+                <v-layout row wrap justify-center>
+                  <v-flex xs12 sm11>
+                    <v-select
+                      v-model="habit.selectedWeekdays"
+                      :items="weekDays"
+                      name="weekDay"
+                      label="Select weekly schedule"
+                      :rules="rules.weekDays"
+
+                      item-text="text"
+                      item-value="value"
+
+                      :menu-props="{ maxHeight: '400' }"
+
+                      multiple
+                      persistent-hint
+                    ></v-select>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-slide-y-transition>
+
             <v-divider></v-divider>
 
-            <v-layout row wrap justify-center>
-              <v-flex xs5>
-                <v-checkbox
-                  v-model="habit.public"
-                  label="Public for my friends"
-                  required
-                ></v-checkbox>
-              </v-flex>
-              <v-flex xs5>
-                <v-checkbox
-                  v-model="habit.measurable"
-                  label="Measurable"
-                  required
-                ></v-checkbox>
-              </v-flex>
-              <v-flex xs12 sm11>
-                <v-text-field
-                  v-if="habit.measurable"
-                  v-model="habit.unit"
-                  required
-
-                  name="Unit"
-                  label="Unit"
-                  type="text"
-                ></v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-divider class="mb-3"></v-divider>
-            <v-layout row wrap justify-center>
-              <v-flex xs12 sm11>
-                <v-time-picker v-model="e7" format="24hr" landscape></v-time-picker>
-              </v-flex>
-            </v-layout>
-            <v-divider class="mb-3"></v-divider>
-            <v-layout row wrap justify-center>
-              <v-flex xs12 sm11>
-                <v-select
-                  :items="weekDays"
-                  v-model="selectedWeekdays"
-                  :menu-props="{ maxHeight: '400' }"
-                  label="Select weekly schedule"
-                  multiple
-                  hint="Days to perform habit"
-                  persistent-hint
-                ></v-select>
-              </v-flex>
-            </v-layout>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn
+                icon
+                @click="deleteHabit"
+                 >
+                <v-icon
+
+                  color="red"
+                >delete</v-icon>
+              </v-btn>
+              <v-btn  @click="show = !show">
+                <span v-if="!show">
+                  More info
+                </span>
+                <span v-if="show">
+                  Less info
+                </span>
+                <!-- <v-icon>{{ show ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon> -->
+              </v-btn>
               <v-btn
                 dark color="green"
                 @click="saveHabit">
@@ -94,39 +145,86 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-content>
+  </div>
 </template>
  <script>
  export default {
+   props: {
+     habit: {
+       type: Object
+     }
+   },
    components: {
 
    },
    data: () => ({
      // habits data stubs
+     show: false,
+     isNewHabit: false,
+     valid: false,
+     rules: {
+
+     },
      isNew: false,
      weekDays: [
-       'Monday',
-       'Tuesday',
-       'Wednesday',
-       'Thursday',
-       'Friday',
-       'Saturday',
-       'Sunday'
-     ],
-     habit: {
-         key: 0,
-         name: 'Push-ups',
-         description: 'Do one pushup per day!',
-         active: 1,
-         show: false,
-         public: false,
-         measurable: true,
-         unit: 'kg'
+       {
+         text:'Sunday',
+         value: 0
+       },
+       {
+         text:'Monday',
+         value: 1
+       },
+       {
+         text:'Tuesday',
+         value: 2
+       },
+       {
+         text:'Wednesday',
+         value: 3
+       },
+       {
+         text:'Thursday',
+         value: 4
+       },
+       {
+         text:'Friday',
+         value: 5
+       },
+       {
+         text:'Saturday',
+         value: 6
        }
+     ]
    }),
    methods: {
      saveHabit() {
-
+       if(this.isNewHabit){
+         this.$store.dispatch('newHabit', { habit: this.habit })
+           .then((res) => {
+             this.$router.push('/habitList');
+           });
+       } else {
+         this.$store.dispatch('updateHabit', { habit: this.habit })
+          .then((res) => {
+            this.$router.push('/habitList');
+          });
+       }
+     },
+     deleteHabit(){
+       // console.log('dispatching delete habit')
+       if(confirm('Are you sure?')){
+          this.$store.dispatch('deleteHabit', {habitId: this.habit._id})
+            .then(() => {
+              this.$router.push('/habitList')
+            })
+       }
+     }
+   },
+   created() {
+     // check if habit is new
+     if(this.$route.params.id === "-1") {
+       this.isNewHabit = true
      }
    }
  }

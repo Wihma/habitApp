@@ -22,7 +22,7 @@
                 <v-icon>search</v-icon>
               </v-btn>
             </v-toolbar>
-            <div v-for="habit in habits" :key="habit._id">
+            <div v-for="habit in habits" :key="habit.key">
               <habit-list-item :habit="habit" v-if="habit.visible"></habit-list-item>
               <v-divider v-if="habit.visible" class="mb-3"></v-divider>
             </div>
@@ -60,7 +60,7 @@ import HabitListItem from '@/components/habit/habit-list-item'
    computed: {
      habits() {
        // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.allHabits;
+       let tempHabits = this.$store.getters.allArchivedHabits;
 
        tempHabits.forEach((habit) => {
         habit.visible = true;
@@ -75,17 +75,6 @@ import HabitListItem from '@/components/habit/habit-list-item'
        // -1 equals new habit
        this.$router.push('habit/-1')
      }
-   },
-   beforeMount(){
-     //   // make sure all habits are visible when retrieved from the store
-     //   let tempHabits = this.$store.getters.allHabits;
-     //
-     //   tempHabits.forEach((habit) => {
-     //    habit.visible = true;
-     //    habit.show = false
-     //  });
-     //
-     // return tempHabits
    },
    watch: {
      search: {

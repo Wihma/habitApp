@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <toolbar></toolbar>
-    <span>I can seee</span>
+    <navigation></navigation>
     <v-content>
       <router-view/>
     </v-content>
@@ -11,15 +11,20 @@
 <script>
 
 import toolbar from '@/components/layout/toolbar'
+import navigation from '@/components/layout/nav'
 export default {
   name: 'App',
   components: {
-    'toolbar': toolbar
+    'toolbar': toolbar,
+    'navigation': navigation
   },
   data () {
     return {
       //
     }
+  },
+  beforeMount(){
+    this.$store.dispatch('getAllHabits')
   }
 }
 </script>
