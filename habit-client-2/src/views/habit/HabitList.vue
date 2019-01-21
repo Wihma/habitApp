@@ -77,15 +77,7 @@ import HabitListItem from '@/components/habit/habit-list-item'
      }
    },
    beforeMount(){
-     //   // make sure all habits are visible when retrieved from the store
-     //   let tempHabits = this.$store.getters.allHabits;
-     //
-     //   tempHabits.forEach((habit) => {
-     //    habit.visible = true;
-     //    habit.show = false
-     //  });
-     //
-     // return tempHabits
+     this.$store.dispatch('getAllHabits')
    },
    watch: {
      search: {

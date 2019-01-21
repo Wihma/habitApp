@@ -85,24 +85,24 @@ export default {
         alert('Amont cannot be 0');
 
         return null;
-      }
-      this.display.addUnit = false;
-      this.habit.visible = false;
+      } else {
+        this.display.addUnit = false;
+        this.habit.visible = false;
 
-      console.log('triggering action');
-      this.$store.dispatch('saveTodayPerformed', {
-        habitId: this.habit._id,
-        dayPerformed: {
-          time: this.time,
-          amount: this.amount,
-          comment: 'A test description'
-        }
-      }).then(
-        console.log('success?')
-      ).catch(
-        console.error('error')
-      );
-      this.initialState()
+        this.$store.dispatch('saveTodayPerformed', {
+          habitId: this.habit._id,
+          dayPerformed: {
+            time: this.time,
+            amount: this.amount,
+            comment: 'A test description'
+          }
+        }).then(
+          console.log('success?')
+        ).catch(
+          console.error('error')
+        );
+        this.initialState()
+      }      
     },
     initialState() {
       this.display = {

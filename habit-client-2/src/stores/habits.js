@@ -173,6 +173,7 @@ export const habits = {
         habitIndex = allHabits.findIndex((h => h._id === habit._id));
         if (habitIndex > -1) {
           allHabits.splice(habitIndex, 1);
+
           Vue.set(state, 'habits', habit);
           // allHabits.push(habit)
         }

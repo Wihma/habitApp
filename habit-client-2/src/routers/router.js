@@ -14,7 +14,7 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/habitlist')
+  next('/login')
 }
 
 const ifAuthenticated = (to, from, next) => {

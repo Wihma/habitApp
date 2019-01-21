@@ -67,13 +67,13 @@
                   </v-flex>
                   <v-flex xs5>
                     <v-checkbox
-                      v-model="habit.measuraWUnit"
+                      v-model="habit.measureWUnit"
                       label="Measure Habit With a Unit"
                     ></v-checkbox>
                   </v-flex>
                   <v-flex xs12 sm11>
                     <v-text-field
-                      v-if="habit.measureUnit"
+                      v-if="habit.measureWUnit"
                       v-model="habit.unit"
                       :rules="rules.name"
                       hint="Unit you want to measure your habit in"
@@ -163,7 +163,12 @@
      isNewHabit: false,
      valid: false,
      rules: {
-
+       name: [
+         v => !!v || 'Name is required',
+       ],
+       description: [
+         v => !!v || 'Description is required',
+       ],
      },
      isNew: false,
      weekDays: [

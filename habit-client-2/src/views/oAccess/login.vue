@@ -42,9 +42,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
-                v-if="!submitted"
-                dark color="green"
-                @click="submitLogin">
+                color="green"
+                dark
+                @click="validateForm">
                 Login
               </v-btn>
             </v-card-actions>
@@ -61,7 +61,6 @@ export default {
   data: () => ({
     valid: true,
     submitted: false,
-
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -73,16 +72,22 @@ export default {
       v => (v && v.length >= 6) || 'Password must be more than 6 characters'
     ]
   }),
+  computed: {
+  },
   methods: {
+    validateForm() {
+      if(this.$refs.form.validate()) {
+        this.submitLogin()
+      }
+    },
     submitLogin () {
       this.submitted = true;
       this.$store.dispatch('login', {email: this.email, password: this.password})
       .then(res => {
-        console.log('component')
-        console.log(res)
         // if(res !== 'OK') {
         //   this.submitted = false;
         // } else {
+        console.log(res);
           this.$router.push('habitlist')
         // }
       }).catch(e => {
@@ -90,6 +95,15 @@ export default {
           this.submitted = false;
       });
     }
+  },
+  mounted() {
+    var that = this;
+    window.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        console.log(that)
+        that.validateForm();
+      }
+    });
   },
   created() {
     const loggedIn = localStorage.getItem('userjwt');
