@@ -62,7 +62,6 @@ router.post('/login', auth.optional, (req, res, next) => {
   //This lookup would normally be done using a database
   console.log({email: email, password: password});
 
-
   Users.findOne({email: email})
     .then((user) => {
       if(!user) {
@@ -81,6 +80,7 @@ router.post('/login', auth.optional, (req, res, next) => {
         const token = jwt.sign({ email }, secret, opts);
         return res.status(200).json({
             message: "Auth Passed",
+            userId: user._id,
             token
         })
       }

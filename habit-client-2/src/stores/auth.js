@@ -3,24 +3,32 @@ import { userService } from '@/services/user'
 export const auth = {
   state: {
     user: {
-      isLoggedIn: false
+      isLoggedIn: false,
+      userId: ''
     }
   },
   getters: {
     isLoggedIn: (state) => {
       return state.user.isLoggedIn
+    },
+    currentUserId: (state) => {
+      return state.user.userId
     }
   },
   mutations: {
     logout: (state) => {
       state.user.isLoggedIn = false
     },
-    loginRequest: (state) => {
+    loginRequest: (state, userId) => {
       // make a login attempt and log
-      state.user.isLoggedIn = true
+      state.user.isLoggedIn = true;
+      state.user.userId = userId
     },
     loginSuccess: (state) => {
 
+    },
+    setCurrentuserId: (state) => {
+      state.user.userId = localStorage.getItem('userId');
     },
     jwtActive: (state) => {
       state.user.isLoggedIn = true;
@@ -33,21 +41,13 @@ export const auth = {
         .then((res) => {
           console.log({res:res})
 
-          commit('loginRequest')
+          commit('loginRequest', res.userId);
           localStorage.setItem('jwt', res.token);
+          localStorage.setItem('userId', res.userId);
 
-          return
-
-          // return new Promise((resolve, reject) => {
-          //   if(password.length > 6) {
-          //     resolve('OK')
-          //   } else {
-          //     reject(new Error('Custom error'))
-          //   }
-          // });
+          dispatch('getAllHabitsForUser')
+          return res;
         })
-
-
     },
     logout ({ commit }) {
       commit('logout')

@@ -8,6 +8,10 @@ router.use(function(req, res, next) {
   next();
 });
 
+router.get('/test', (req, res, next) => {
+    res.send('you found the api')
+});
+
 router.use('/user', require('./user'));
 router.use('/habit', require('./habit'));
 

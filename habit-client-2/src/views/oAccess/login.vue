@@ -84,12 +84,13 @@ export default {
       this.submitted = true;
       this.$store.dispatch('login', {email: this.email, password: this.password})
       .then(res => {
-        // if(res !== 'OK') {
-        //   this.submitted = false;
-        // } else {
+        console.log({res:res});
+        if(res !== 'OK') {
+          this.submitted = false;
+        } else {
         console.log(res);
           this.$router.push('habitlist')
-        // }
+        }
       }).catch(e => {
           console.log(e);
           this.submitted = false;

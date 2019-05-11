@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 // const auth = require('../auth');
 const Habits = mongoose.model('Habits');
+
+// this is required to couple a habit to a specific user
+const Users = mongoose.model('Users');
+
 const HabitPerformed = mongoose.model('HabitPerformed');
-// const Time = mongoose.model('Time');
 
 //POST new user route (optional, everyone has access)
 router.get('/', (req, res, next) => {
@@ -30,6 +33,33 @@ router.get('/all', (req, res, next) => {
       })
 });
 
+router.get('/getAllHabitsForUser', (req, res, next) => {
+  console.log({'message': 'getAllHabitsForUser', userId: req.query.userId});
+  console.log(req.body);
+
+  Users.findOne({_id: req.query.userId})
+    .populate('Habits.name')
+    .exec((err, user) => {
+      if(err) res.status(500).send(err);
+      console.log({type: typeof user.habits, content: user.habits});
+      if(user.habits !== undefined ) {
+          res.json(user.habits);
+      } else {
+        res.json([]);
+      }
+
+    });
+
+  // Habits.find()
+  //   .then((habits) => {
+  //     res.json(habits)
+  //   })
+  //   .catch((error) => {
+  //     res.json({status: 'error', message: error.message});
+  //   })
+});
+
+
 router.delete('/delete', (req, res, next) => {
   console.log(req.body);
   // res.json({status: 'error', message: req.body.id});
@@ -53,30 +83,86 @@ router.delete('/delete', (req, res, next) => {
     } else {
       return res.status(404).json({message:'not found'})
     }
-
   })
   } );
 
 
 router.post('/new', (req, res, next) => {
+
+  // i need to find the user first
+  const userId = req.body.userId;
   const habit = req.body.habit;
 
-  console.log(habit);
-
-  if(!habit) {
-    throw new Error('Empty request');
+  if(!habit || !userId) {
+    throw new Error('Incomplete request');
   }
-  const newHabit = new Habits(habit);
 
-  newHabit.save()
-    .then(() => {
-      res.json({ habit: newHabit })
+  console.log({userId: userId, habit: habit});
+
+  Users.findOne({_id: userId})
+    .then((user) => {
+
+      console.info('found one_2');
+      const newHabit = new Habits(habit);
+      user.habits.push(newHabit);
+
+      user.save()
+        .then(
+          () => {
+            res.json({habit: newHabit});
+          },
+          (err) => {
+            throw Error(err)
+
+            console.error(err);
+          }
+        )
+        .catch((error) => {
+          console.error( 'onRejected function called: ' + error.message );
+          res.json({status: 'error', message: error.message});
+        });
     })
     .catch((error) => {
-      console.error( 'onRejected function called: ' + error.message );
+      console.error( 'could not find user: ' + error.message );
       res.json({status: 'error', message: error.message});
     });
+
+  //
+  // if(!habit) {
+  //   throw new Error('Empty request');
+  // }
+  // const newHabit = new Habits(habit);
+  //
+  // newHabit.save()
+  //   .then(() => {
+  //     res.json({ habit: newHabit })
+  //   })
+  //   .catch((error) => {
+  //     console.error( 'onRejected function called: ' + error.message );
+  //     res.json({status: 'error', message: error.message});
+  //   });
 });
+
+// copy of new before playing around with tying habits to user
+// router.post('/new', (req, res, next) => {
+//   const habit = req.body.habit;
+//
+//   console.log(habit);
+//
+//   if(!habit) {
+//     throw new Error('Empty request');
+//   }
+//   const newHabit = new Habits(habit);
+//
+//   newHabit.save()
+//     .then(() => {
+//       res.json({ habit: newHabit })
+//     })
+//     .catch((error) => {
+//       console.error( 'onRejected function called: ' + error.message );
+//       res.json({status: 'error', message: error.message});
+//     });
+// });
 
 router.put('/update', (req, res, next) => {
   const updatedHabit = req.body.habit;

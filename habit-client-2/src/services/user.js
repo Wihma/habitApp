@@ -9,6 +9,10 @@ export const userService = {
         console.log({message: 'successful login', res: res})
 
         return res
+      })
+      .catch((err) => {
+        console.log({'status': 'error', 'err':err})
+        return {status: 401, message: 'login failed'}
       });
   }
 }
@@ -16,6 +20,7 @@ export const userService = {
 
 function handleResponse(response) {
   const data = response.data
+  console.log({message: 'handle response', response: response})
   if(!(response.status === 200 && response.statusText === "OK")) {
     if (response.status === 401) {
         // auto logout if 401 response returned from api

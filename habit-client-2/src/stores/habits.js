@@ -1,5 +1,6 @@
 import { habitService } from '@/services/habit'
 import Vue from 'vue'
+// import Vuex from 'vuex'
 // import { authService } from '@/services/Auth'
 // import { router } from '@/routers/router'
 
@@ -66,21 +67,25 @@ export const habits = {
     ]
   },
   getters: {
-    allHabits: (state) => {
-      // console.log(state.habits.filter(habit => habit.active === 1));
-
-      return state.habits.filter(habit => habit.active === true)
+    // allHabits: (state) => {
+    //
+    //   return state.habits.filter(habit => habit.active === true)
+    // },
+    allUserHabits: (state) => {
+      if(Object.keys(state.habits).length > 0) {
+        return state.habits.filter(habit => habit.active === true)
+      }
     },
     allArchivedHabits: (state) => {
-      // console.log(state.habits.filter(habit => habit.active === 1));
-      return state.habits.filter(habit => habit.active === false)
+      if(state.habits.lenght > 0) {
+        return state.habits.filter(habit => habit.active === false)
+      }
     },
     getHabitById: (state) => (_id) => {
       // id -1 equals new habit
       if(_id === "-1") {
         // here is a good place to set default values
         // return a clone of newHabit
-        return JSON.parse(JSON.stringify(state.newHabit))
       } else {
           return state.habits.find(habit => habit._id === _id)
       }
@@ -109,10 +114,9 @@ export const habits = {
       let n = d.getDay();
 
       let todaysHabits = state.habits;
-
-      console.log(todaysHabits);
-
-      console.log({n:n})
+      if(todaysHabits.length < 1) {
+        return
+      }
 
       todaysHabits = todaysHabits.filter(
         habit => habit.selectedWeekdays.find(
@@ -121,7 +125,6 @@ export const habits = {
           }
         )
       );
-      console.log(todaysHabits);
 
       todaysHabits = todaysHabits.filter(habit => habit.active === true);
 
@@ -133,7 +136,6 @@ export const habits = {
 
           var latestDay = null;
           if(daysPerformed.lenght > 1 && daysPerformed !== undefined) {
-            // console.log('should not enter here');
             latestDay = daysPerformed[daysPerformed.lenght-1];
           } else {
             latestDay = daysPerformed[0];
@@ -148,13 +150,10 @@ export const habits = {
             // if empty return true
             return true
           }
-
       })
-
       todaysHabits.sort(function(a, b) {
           return a.time > b.time
       });
-
       return todaysHabits
     }
   },
@@ -162,11 +161,12 @@ export const habits = {
     getAllHabits:(state, habits) => {
       state.habits = habits;
     },
+    setAllHabitsForUser:(state, habits) => {
+      state.habits = habits;
+    },
     saveHabit: (state, habit) => {
       // filter out the habit based on habit._id and replace the values that differ
       // save and ensure should be the same
-
-
       let habitIndex;
       let allHabits = state.habits;
       try{
@@ -185,7 +185,6 @@ export const habits = {
     saveTodayPerformed: (state, payload) => {
       let tmpHabitPerformed;
       // payload = {habitid: id, todayPerformed: todayPerformed}
-      console.log('in mutation', payload);
       // if error create new todayPerformed
       try {
           tmpHabitPerformed = state.habits.find(h => h._id === payload.habitId);
@@ -215,21 +214,22 @@ export const habits = {
       habitService.getAll()
         .then((habits) => {
           // console.log({message: 'in the store', habits: habits})
-          commit('getAllHabits', habits);
+          commit('setAllHabits', habits);
         });
     },
-    newHabit ({ dispatch, commit }, {habit}) {
-      // console.log({location: 'habitStore', action: 'saveHabit'})
-      // commit('saveHabit', habit);
+    getAllHabitsForUser ({ dispatch, commit, rootState, rootGetters }) {
+      habitService.getAllHabitsForUser(rootGetters.currentUserId)
+        .then((habits) => {
+          commit('setAllHabitsForUser', habits);
+        });
+    },
+    newHabit ({ dispatch, commit, rootState, rootGetters }, {habit}) {
 
-      return habitService.new(habit)
+      console.log({userId: rootGetters.currentUserId, habit: habit});
+      return habitService.new(rootGetters.currentUserId, habit)
         .then(
           commit('saveHabit', {habit: habit})
         );
-
-      // return new Promise((resolve, reject) => {
-      //   resolve('OK')
-      // });
     },
     updateHabit ({ dispatch, commit }, {habit}) {
       // console.log({location: 'habitStore', action: 'saveHabit'})

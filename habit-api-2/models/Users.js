@@ -3,16 +3,21 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+require ('./Habits');
+
+const Habits = mongoose.model('Habits').schema; // should be renamed to habit
+
 const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
   email       : {type: String, unique: true, required: true, dropDups: true},
   salt        : {type: String, required: true},
   hash        : {type: String, required: true},
-  // habits      : [{
-  //   type: ObjectId,
-  //   ref: 'Habits'
-  // }]
+  // habits      : [Habits]
+  habits      : [{
+    type: ObjectId,
+    ref: 'Habits'
+  }]
 });
 
 UsersSchema.methods.setPassword = function(password) {

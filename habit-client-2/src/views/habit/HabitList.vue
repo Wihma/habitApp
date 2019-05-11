@@ -17,7 +17,6 @@
                 solo
                 style="width:300px"
               ></v-text-field>
-
               <v-btn icon>
                 <v-icon>search</v-icon>
               </v-btn>
@@ -46,8 +45,7 @@
  <script>
 
 import HabitListItem from '@/components/habit/habit-list-item'
-
- export default {
+export default {
    components: {
       'habit-list-item': HabitListItem
    },
@@ -60,14 +58,18 @@ import HabitListItem from '@/components/habit/habit-list-item'
    computed: {
      habits() {
        // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.allHabits;
+       let tempHabits = this.$store.getters.allUserHabits;
+       if(tempHabits !== undefined) {
+         tempHabits.forEach((habit) => {
+           habit.visible = true;
+           habit.show = false
+         });
 
-       tempHabits.forEach((habit) => {
-        habit.visible = true;
-        habit.show = false
-      });
-
-       return tempHabits
+         return tempHabits
+       } else {
+         return [];
+       }
+       // let tempHabits = this.$store.getters.getAllHabitsForUser;
      }
    },
    methods: {
@@ -77,7 +79,7 @@ import HabitListItem from '@/components/habit/habit-list-item'
      }
    },
    beforeMount(){
-     this.$store.dispatch('getAllHabits')
+     this.$store.dispatch('getAllHabitsForUser')
    },
    watch: {
      search: {
