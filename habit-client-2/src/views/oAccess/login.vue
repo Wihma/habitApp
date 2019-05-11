@@ -44,7 +44,7 @@
               <v-btn
                 color="green"
                 dark
-                @click="validateForm">
+                @click="login">
                 Login
               </v-btn>
             </v-card-actions>
@@ -73,6 +73,9 @@ export default {
     ]
   }),
   computed: {
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
+    }
   },
   methods: {
     validateForm() {
@@ -80,21 +83,40 @@ export default {
         this.submitLogin()
       }
     },
-    submitLogin () {
-      this.submitted = true;
-      this.$store.dispatch('login', {email: this.email, password: this.password})
-      .then(res => {
-        console.log({res:res});
-        if(res !== 'OK') {
-          this.submitted = false;
-        } else {
-        console.log(res);
-          this.$router.push('habitlist')
+    login () {
+      // this.submitted = true;
+      // this.$store.dispatch('login', {email: this.email, password: this.password})
+      // .then(res => {
+      //   console.log({res:res});
+      //   if(res !== 'OK') {
+      //     this.submitted = false;
+      //   } else {
+      //   console.log(res);
+      //     this.$router.push('habitlist')
+      //   }
+      // }).catch(e => {
+      //     console.log(e);
+      //     this.submitted = false;
+      // });
+      if (!this.validateForm()) {
+        return
+      }
+
+      this.submitted = true
+      this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password
+      }).then(
+        (res) => { this.$router.push('/habits') },
+        (err) => {
+          console.log(err)
+          this.loginFailed.status = true
+          this.loginFailed.text = 'testing testing'
         }
-      }).catch(e => {
-          console.log(e);
-          this.submitted = false;
-      });
+      ).catch(() => {
+        alert('rejected')
+      })
+
     }
   },
   mounted() {

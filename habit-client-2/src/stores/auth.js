@@ -19,13 +19,15 @@ export const auth = {
     logout: (state) => {
       state.user.isLoggedIn = false
     },
-    loginRequest: (state, userId) => {
+    loginRequest: (state) => {
       // make a login attempt and log
+      // show spinner
+      state.pending = true;
+    },
+    loginSuccess: (state, userId) => {
+      state.pending = false;
       state.user.isLoggedIn = true;
       state.user.userId = userId
-    },
-    loginSuccess: (state) => {
-
     },
     setCurrentuserId: (state) => {
       state.user.userId = localStorage.getItem('userId');
@@ -35,26 +37,25 @@ export const auth = {
     }
   },
   actions: {
-    login ({ dispatch, commit }, {email, password}) {
-
-      userService.login(email, password)
-        .then((res) => {
-          console.log({res:res})
-
-          commit('loginRequest', res.userId);
-          localStorage.setItem('jwt', res.token);
-          localStorage.setItem('userId', res.userId);
-
-          dispatch('getAllHabitsForUser')
-          return res;
-        })
+    login ({ dispatch, commit }, { email, password }) {
+      // commit('loginRequest')
+      return new Promise((resolve, reject) => {
+        userService.login(email, password)
+          .then(res => {
+            if (res.status === 200) {
+              localStorage.setItem('jwt', res.token)
+              // localStorage.setItem('userId', res.userId);
+              resolve(res)
+            }
+          }, error => {
+            reject(error)
+          })
+      })
     },
     logout ({ commit }) {
       commit('logout')
-      localStorage.removeItem('jwt');
-      return new Promise((resolve, reject) => {
-        resolve('OK')
-      });
+      localStorage.removeItem('jwt')
+      return true
     }
   }
 }
