@@ -72,12 +72,11 @@ router.post('/login', auth.optional, (req, res, next) => {
       //   message:'validatingpassword',
       //   result: user.validatePassword(password)
       // });
-
       if(user.validatePassword(password)) {
         const opts = {}
         opts.expiresIn = 120;  //token expires in 2min
         const secret = "SECRET_KEY" //normally stored in process.env.secret
-        const token = jwt.sign({ email }, secret, opts);
+        const token = jwt.sign({ email }, secret, opts);        
         return res.status(200).json({
             message: "Auth Passed",
             userId: user._id,

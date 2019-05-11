@@ -38,17 +38,33 @@ export const auth = {
   },
   actions: {
     login ({ dispatch, commit }, { email, password }) {
-      // commit('loginRequest')
+      commit('loginRequest')
       return new Promise((resolve, reject) => {
         userService.login(email, password)
-          .then(res => {
-            if (res.status === 200) {
+          .then(
+            (res) => {
+              console.log({ this:this, res: res });
+              console.log(res);
+              commit('loginSuccess', res.userId);
               localStorage.setItem('jwt', res.token)
-              // localStorage.setItem('userId', res.userId);
-              resolve(res)
+              resolve(res);
+            },
+            (err) => {
+              console.log(err);
+              reject(err);
             }
-          }, error => {
-            reject(error)
+
+            // res => {
+            // console.log({ res: res, message: 'lets a see'})
+            // if (res.status === 200) {
+            //   commit('loginSuccess', res.userId);
+            //   localStorage.setItem('jwt', res.token)
+            //   // localStorage.setItem('userId', res.userId);
+            //   resolve(res)
+            // }
+          )
+          .catch(err => {
+            console.error(err)
           })
       })
     },

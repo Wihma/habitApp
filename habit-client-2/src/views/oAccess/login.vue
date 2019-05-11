@@ -69,7 +69,7 @@ export default {
     password: '',
     passwordRules: [
       v => !!v || 'Password is required',
-      v => (v && v.length >= 6) || 'Password must be more than 6 characters'
+      v => (v && v.length >= 4) || 'Password must be more than 6 characters'
     ]
   }),
   computed: {
@@ -78,10 +78,8 @@ export default {
     }
   },
   methods: {
-    validateForm() {
-      if(this.$refs.form.validate()) {
-        this.submitLogin()
-      }
+    validateForm () {
+      return this.$refs.form.validate()
     },
     login () {
       // this.submitted = true;

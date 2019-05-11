@@ -5,11 +5,16 @@ export const userService = {
     console.log({email: email, password: password})
     return Api().post('user/login', {email: email, password: password})
       .then(handleResponse)
-      .then((res) => {
-        console.log({message: 'successful login', res: res})
-
-        return res
-      })
+      .then(
+        (res) => {
+          console.log({message: 'successful login', res: res})
+          return res
+        },
+        (err) => {
+          console.log({'status': 'error', 'err':JSON.stringify(err)})
+          return err
+        }
+      )
       .catch((err) => {
         console.log({'status': 'error', 'err':err})
         return {status: 401, message: 'login failed'}
@@ -17,15 +22,12 @@ export const userService = {
   }
 }
 
-
 function handleResponse(response) {
   const data = response.data
   console.log({message: 'handle response', response: response})
   if(!(response.status === 200 && response.statusText === "OK")) {
     if (response.status === 401) {
         // auto logout if 401 response returned from api
-        console.log('handleResponse error');
-        console.log(response);
 
         // logout();
         location.reload(true);
@@ -33,5 +35,5 @@ function handleResponse(response) {
     const error = (data && data.message) || response.statusText;
     return Promise.reject(error);
   }
-  return data;
+  return Promise.resolve(data);
 }
