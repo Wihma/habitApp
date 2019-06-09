@@ -36,6 +36,9 @@ router.get('/all', (req, res, next) => {
 router.get('/getAllHabitsForUser', (req, res, next) => {
   console.log({'message': 'getAllHabitsForUser', userId: req.query.userId});
   console.log(req.body);
+  if(!req.query.userId) {
+    res.status(404).json([]);
+  }
 
   Users.findOne({_id: req.query.userId})
     .populate('Habits.name')
@@ -47,7 +50,6 @@ router.get('/getAllHabitsForUser', (req, res, next) => {
       } else {
         res.json([]);
       }
-
     });
 
   // Habits.find()

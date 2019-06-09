@@ -43,28 +43,19 @@ export const auth = {
         userService.login(email, password)
           .then(
             (res) => {
-              console.log({ this:this, res: res });
-              console.log(res);
               commit('loginSuccess', res.userId);
               localStorage.setItem('jwt', res.token)
+
+              console.log({ text:'successful login', res:res });
               resolve(res);
             },
             (err) => {
-              console.log(err);
+              console.log({ text:'failed to log in', err:err });
               reject(err);
             }
-
-            // res => {
-            // console.log({ res: res, message: 'lets a see'})
-            // if (res.status === 200) {
-            //   commit('loginSuccess', res.userId);
-            //   localStorage.setItem('jwt', res.token)
-            //   // localStorage.setItem('userId', res.userId);
-            //   resolve(res)
-            // }
           )
           .catch(err => {
-            console.error(err)
+            console.log(err)
           })
       })
     },

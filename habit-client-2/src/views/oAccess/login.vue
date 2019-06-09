@@ -37,6 +37,13 @@
                   label="Password"
                   type="password">
                 </v-text-field>
+                <v-alert
+                  v-model="loginFailed.status"
+                  type="error"
+                  dismissible
+                  >
+                  {{loginFailed.text}}
+                </v-alert>
               </v-form>
             </v-card-text>
             <v-card-actions>
@@ -61,6 +68,10 @@ export default {
   data: () => ({
     valid: true,
     submitted: false,
+    loginFailed: {
+      status: false,
+      text: ''
+    },
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -82,20 +93,6 @@ export default {
       return this.$refs.form.validate()
     },
     login () {
-      // this.submitted = true;
-      // this.$store.dispatch('login', {email: this.email, password: this.password})
-      // .then(res => {
-      //   console.log({res:res});
-      //   if(res !== 'OK') {
-      //     this.submitted = false;
-      //   } else {
-      //   console.log(res);
-      //     this.$router.push('habitlist')
-      //   }
-      // }).catch(e => {
-      //     console.log(e);
-      //     this.submitted = false;
-      // });
       if (!this.validateForm()) {
         return
       }
@@ -105,11 +102,14 @@ export default {
         email: this.email,
         password: this.password
       }).then(
-        (res) => { this.$router.push('/habits') },
+        (res) => {
+          this.$router.push('/habits')
+          console.log({ text:'successful login', res:res });          
+        },
         (err) => {
-          console.log(err)
+          console.log({ text:'failed to log in', err:err });
           this.loginFailed.status = true
-          this.loginFailed.text = 'testing testing'
+          this.loginFailed.text = 'Failed to login'
         }
       ).catch(() => {
         alert('rejected')

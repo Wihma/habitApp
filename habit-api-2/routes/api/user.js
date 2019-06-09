@@ -67,24 +67,28 @@ router.post('/login', auth.optional, (req, res, next) => {
       if(!user) {
         throw new Error('User not found');
       }
-      // console.log(
-      // {
-      //   message:'validatingpassword',
-      //   result: user.validatePassword(password)
-      // });
+
+      console.log({
+        'isValidPassword': user.validatePassword(password)
+      })
       if(user.validatePassword(password)) {
         const opts = {}
         opts.expiresIn = 120;  //token expires in 2min
         const secret = "SECRET_KEY" //normally stored in process.env.secret
-        const token = jwt.sign({ email }, secret, opts);        
+        const token = jwt.sign({ email }, secret, opts);
+        console.log('return 1');
         return res.status(200).json({
             message: "Auth Passed",
             userId: user._id,
-            token
+            token: token
         })
+      } else {
+        console.log('return 2');
+        return res.status(401).json({ message: "Auth Failed" })
       }
     }).catch((error) => {
       console.error( 'onRejected function called: ' + error.message );
+      console.log('return 3');
       return res.status(401).json({ message: "Auth Failed" })
     });
 
