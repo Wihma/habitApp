@@ -45,12 +45,9 @@ export const auth = {
             (res) => {
               commit('loginSuccess', res.userId);
               localStorage.setItem('jwt', res.token)
-
-              console.log({ text:'successful login', res:res });
               resolve(res);
             },
             (err) => {
-              console.log({ text:'failed to log in', err:err });
               reject(err);
             }
           )
