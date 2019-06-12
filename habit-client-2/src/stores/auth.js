@@ -24,13 +24,16 @@ export const auth = {
       // show spinner
       state.pending = true;
     },
-    loginSuccess: (state, userId) => {
+    loginSuccess: (state) => {
       state.pending = false;
       state.user.isLoggedIn = true;
-      state.user.userId = userId
     },
-    setCurrentuserId: (state) => {
-      state.user.userId = localStorage.getItem('userId');
+    setCurrentuserId: (state, userId) => {
+      if(localStorage.getItem('userId') !== null && localStorage.getItem('userId') !== '' && localStorage.getItem('userId').length > 5) {
+        state.user.userId = localStorage.getItem('userId');
+      } else {
+        state.user.userId = userId;
+      }
     },
     jwtActive: (state) => {
       state.user.isLoggedIn = true;
@@ -43,8 +46,11 @@ export const auth = {
         userService.login(email, password)
           .then(
             (res) => {
-              commit('loginSuccess', res.userId);
-              localStorage.setItem('jwt', res.token)
+              commit('loginSuccess');
+              commit('setCurrentuserId', res.userId);
+              localStorage.setItem('jwt', res.token);
+              localStorage.setItem('userId', res.userId);
+
               resolve(res);
             },
             (err) => {

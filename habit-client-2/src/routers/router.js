@@ -10,30 +10,37 @@ import auth from './middleware/global/auth'
 
 const globalMiddleware = [log, auth]
 
-const ifnotauthenticated = (to, from, next) => {
+const routerPaths = {
+  Login: 'Login',
+  Habits: 'Habits'
+}
+
+const authCheck = (to, from, next) => {
   if (!store.getters.isloggedin) {
     if(localStorage.getItem('jwt')) {
       store.commit('jwtActive');
       store.commit('setCurrentuserId');
+      if(to.name === routerPaths.Login) {
+        next('/habits')
+      }
     };
-    store.commit('setCurrentuserId');
     next()
     return
   }
   next('/login')
 }
 
-const ifAuthenticated = (to, from, next) => {
-  console.log('ifAuthenticated');
-  if (localStorage.getItem('jwt')) {
-    console.log('found jwt');
-    store.commit('jwtActive');
-    store.commit('setCurrentuserId');
-    next('/HabitList')
-    return
-  }
-  next('/login')
-}
+// const ifAuthenticated = (to, from, next) => {
+//   console.log('ifAuthenticated');
+//   if (localStorage.getItem('jwt') && localStorage.getItem('jwt')) {
+//     console.log(this.$route);
+//     store.commit('jwtActive');
+//     store.commit('setCurrentuserId');
+//     next('/HabitList')
+//     return
+//   }
+//   next('/login')
+// }
 
 Vue.use(Router)
 
@@ -45,25 +52,25 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: () => import(/* webpackChunkName: "about" */ '@/views/oAccess/start.vue'),
-      beforeEnter: ifAuthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
     },
     {
       path: '/login',
-      name: 'Login',
+      name: routerPaths.Login,
       component: () => import(/* webpackChunkName: "about" */ '@/views/oAccess/login.vue'),
-      //beforeEnter: ifAuthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: [log]
       }
     },
     {
       path: '/habit/:id',
-      name: 'Habit',
+      name: routerPaths.Habits,
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/habit.vue'),
-      beforeEnter: ifnotauthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
@@ -72,7 +79,7 @@ const router = new Router({
       path: '/habits',
       name: 'Habits',
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/HabitList.vue'),
-      beforeEnter: ifnotauthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
@@ -81,7 +88,7 @@ const router = new Router({
       path: '/todayshabits',
       name: 'TodaysHabits',
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/TodaysHabits.vue'),
-      beforeEnter: ifnotauthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
@@ -90,7 +97,7 @@ const router = new Router({
       path: '/archivedhabits',
       name: 'ArchivedHabitList',
       component: () => import(/* webpackChunkName: "about" */ '@/views/habit/ArchivedHabitList.vue'),
-      beforeEnter: ifnotauthenticated,
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
@@ -107,6 +114,7 @@ const router = new Router({
       path: '/user/home',
       name: 'Start',
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/home.vue'),
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }
@@ -115,6 +123,7 @@ const router = new Router({
       path: '/user/settings',
       name: 'UserSettings',
       component: () => import(/* webpackChunkName: "about" */ '@/views/user/settings.vue'),
+      beforeEnter: authCheck,
       meta: {
         middleware: globalMiddleware
       }

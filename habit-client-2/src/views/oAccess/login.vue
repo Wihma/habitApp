@@ -104,8 +104,10 @@ export default {
       }).then(
         (res) => {
           this.$router.push('/habits')
+
         },
         (err) => {
+          console.error({ text:'failed to log in', err:err });
           this.loginFailed.status = true
           this.loginFailed.text = 'Failed to login'
         }
