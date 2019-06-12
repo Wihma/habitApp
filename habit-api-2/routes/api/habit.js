@@ -36,19 +36,19 @@ router.get('/all', (req, res, next) => {
 router.get('/getAllHabitsForUser', (req, res, next) => {
   console.log({'message': 'getAllHabitsForUser', userId: req.query.userId});
   console.log(req.body);
-  if(!req.query.userId) {
-    res.status(404).json([]);
+  if(!req.query.userId || req.query.userId === '' || req.query.userId === null) {
+    res.status(200).json([]);
   }
 
   Users.findOne({_id: req.query.userId})
     .populate('Habits.name')
     .exec((err, user) => {
       if(err) res.status(500).send(err);
-      console.log({type: typeof user.habits, content: user.habits});
+      // console.log({type: typeof user.habits, content: user.habits});
       if(user.habits !== undefined ) {
-          res.json(user.habits);
+          res.status(200).json(user.habits);
       } else {
-        res.json([]);
+        res.status(200).json([]);
       }
     });
 

@@ -82,25 +82,7 @@ router.post('/login', auth.optional, (req, res, next) => {
       }
     }).catch((error) => {
       return res.status(401).json({ message: "Auth Failed" })
-    });
-
-  // if (email === "marc@test.se") {
-  //   console.log('verified email');
-  //     if (password === "pass") { //the password compare would normally be done using bcrypt.
-  //
-  //         const opts = {}
-  //         opts.expiresIn = 120;  //token expires in 2min
-  //         const secret = "SECRET_KEY" //normally stored in process.env.secret
-  //         console.log('verified password');
-  //         const token = jwt.sign({ email }, secret, opts);
-  //         console.log('verified password');
-  //         return res.status(200).json({
-  //             message: "Auth Passed",
-  //             token
-  //         })
-  //     }
-  // }
-  // return res.status(401).json({ message: "Auth Failed" })
+    });  
 });
 
 // router.get("/protected", (req, res) => {
