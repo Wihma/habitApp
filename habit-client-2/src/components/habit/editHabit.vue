@@ -207,12 +207,12 @@
        if(this.isNewHabit){
          this.$store.dispatch('newHabit', { habit: this.habit })
            .then((res) => {
-             this.$router.push('/habitList');
+             this.$router.push('/habits');
            });
        } else {
          this.$store.dispatch('updateHabit', { habit: this.habit })
           .then((res) => {
-            this.$router.push('/habitList');
+            this.$router.push('/habits');
           });
        }
      },
@@ -221,7 +221,7 @@
        if(confirm('Are you sure?')){
           this.$store.dispatch('deleteHabit', {habitId: this.habit._id})
             .then(() => {
-              this.$router.push('/habitList')
+              this.$router.push('/habits')
             })
        }
      }

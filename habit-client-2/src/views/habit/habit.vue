@@ -16,7 +16,7 @@ import EditHabit from '@/components/habit/editHabit'
 
    },
    beforeMount() {
-     // console.log(this.$route.params.id);
+     console.log(this.$route.params.id);
      // console.log(this.$store.getters.getHabitById(this.$route.params.id));
      // console.log(this.$store.getters)
      this.habit = this.$store.getters.getHabitById(this.$route.params.id)

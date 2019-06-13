@@ -86,6 +86,9 @@ export const habits = {
       if(_id === "-1") {
         // here is a good place to set default values
         // return a clone of newHabit
+
+        let newHabit = JSON.stringify(state.newHabit);
+        return JSON.parse(newHabit);
       } else {
           return state.habits.find(habit => habit._id === _id)
       }

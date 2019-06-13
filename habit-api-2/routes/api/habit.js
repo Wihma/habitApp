@@ -41,17 +41,16 @@ router.get('/getAllHabitsForUser', (req, res, next) => {
   }
 
   Users.findOne({_id: req.query.userId})
-    .populate('Habits.name')
+    .populate('habits')
     .exec((err, user) => {
       if(err) res.status(500).send(err);
-      // console.log({type: typeof user.habits, content: user.habits});
+      console.log({type: typeof user.habits, content: user.habits});
       if(user.habits !== undefined ) {
           res.status(200).json(user.habits);
       } else {
         res.status(200).json([]);
       }
     });
-
   // Habits.find()
   //   .then((habits) => {
   //     res.json(habits)
@@ -111,7 +110,9 @@ router.post('/new', (req, res, next) => {
       user.save()
         .then(
           () => {
-            res.json({habit: newHabit});
+            newHabit.save(() => {
+              res.status(200).json({habit: newHabit});
+            });
           },
           (err) => {
             throw Error(err)

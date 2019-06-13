@@ -48,6 +48,7 @@ export const habitService = {
 
 function handleResponse(response) {
   const data = response.data
+  console.log({response: response});
   if(!(response.status === 200 && response.statusText === "OK")) {
     if (response.status === 401) {
         // auto logout if 401 response returned from api

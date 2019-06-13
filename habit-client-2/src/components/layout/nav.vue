@@ -76,7 +76,7 @@ export default {
         drawer: true,
         items: [
           { title: 'Home', icon: 'dashboard', route: '/user/home' },
-          { title: 'Habit List', icon: 'question_answer', route: '/habitlist' },
+          { title: 'Habit List', icon: 'question_answer', route: '/habits' },
           { title: 'Todays Habits', icon: 'today', route: '/todayshabits' },
           { title: 'Templates', icon: 'folder', route: '/templates' },
           { title: 'User Settings', icon: 'settings', route: '/user/settings' },
