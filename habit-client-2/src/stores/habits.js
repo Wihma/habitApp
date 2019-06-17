@@ -131,29 +131,29 @@ export const habits = {
 
       todaysHabits = todaysHabits.filter(habit => habit.active === true);
 
-      todaysHabits = todaysHabits.filter((habit) => {
-          let today = new Date().setHours(0,0,0,0);
-          let daysPerformed = habit.daysPerformed.sort(function(a, b){
-            return a.time.start < b.time.start
-          });
-
-          var latestDay = null;
-          if(daysPerformed.lenght > 1 && daysPerformed !== undefined) {
-            latestDay = daysPerformed[daysPerformed.lenght-1];
-          } else {
-            latestDay = daysPerformed[0];
-          }
-          if(Boolean(latestDay)){
-            if(new Date(latestDay.time.start).setHours(0,0,0,0) === today) {
-              return false
-            } else {
-              return true
-            }
-          } else {
-            // if empty return true
-            return true
-          }
-      })
+      // todaysHabits = todaysHabits.filter((habit) => {
+      //     let today = new Date().setHours(0,0,0,0);
+      //     let daysPerformed = habit.daysPerformed.sort(function(a, b){
+      //       return a.time.start < b.time.start
+      //     });
+      //
+      //     var latestDay = null;
+      //     if(daysPerformed.lenght > 1 && daysPerformed !== undefined) {
+      //       latestDay = daysPerformed[daysPerformed.lenght-1];
+      //     } else {
+      //       latestDay = daysPerformed[0];
+      //     }
+      //     if(Boolean(latestDay)){
+      //       if(new Date(latestDay.time.start).setHours(0,0,0,0) === today) {
+      //         return false
+      //       } else {
+      //         return true
+      //       }
+      //     } else {
+      //       // if empty return true
+      //       return true
+      //     }
+      // })
       todaysHabits.sort(function(a, b) {
           return a.time > b.time
       });
@@ -186,22 +186,30 @@ export const habits = {
       }
     },
     saveTodayPerformed: (state, payload) => {
+
+
       let tmpHabitPerformed;
       // payload = {habitid: id, todayPerformed: todayPerformed}
       // if error create new todayPerformed
+
       try {
           tmpHabitPerformed = state.habits.find(h => h._id === payload.habitId);
           tmpHabitPerformed.daysPerformed.push(payload.dayPerformed)
       } catch {
         // state.todayPerformed.push
         tmpHabitPerformed = {
-          id: Math.floor(Math.random() * 1000),
+          id: 0,
           habitId: payload.habitId,
           days: []
         }
         tmpHabitPerformed.days.push(payload.dayPerformed)
         state.habitsPerformed.push(tmpHabitPerformed);
       }
+    },
+    refreshTodaysHabits: (state) => {
+      let tmpHabits = state.habits;
+      state.habits = null;
+      state.habits = tmpHabits;
     },
     deleteHabit: (state, habitId) => {
       // find index of deleted habit and remove it
@@ -214,14 +222,14 @@ export const habits = {
   actions: {
     // make request to api for permanent storage and then trigger mutations
     getAllHabits ({ dispatch, commit }) {
-      habitService.getAll()
+      return habitService.getAll()
         .then((habits) => {
           // console.log({message: 'in the store', habits: habits})
           commit('setAllHabits', habits);
         });
     },
     getAllHabitsForUser ({ dispatch, commit, rootState, rootGetters }) {
-      habitService.getAllHabitsForUser(rootGetters.currentUserId)
+      return habitService.getAllHabitsForUser(rootGetters.currentUserId)
         .then((habits) => {
           commit('setAllHabitsForUser', habits);
         });

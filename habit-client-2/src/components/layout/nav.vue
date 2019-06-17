@@ -69,28 +69,33 @@
 
 <script>
 
+//const router = require('@/routers/router');
+
 
 export default {
   data () {
-      return {
-        drawer: true,
-        items: [
-          { title: 'Home', icon: 'dashboard', route: '/user/home' },
-          { title: 'Habit List', icon: 'question_answer', route: '/habits' },
-          { title: 'Todays Habits', icon: 'today', route: '/todayshabits' },
-          { title: 'Templates', icon: 'folder', route: '/templates' },
-          { title: 'User Settings', icon: 'settings', route: '/user/settings' },
-          { title: 'Archived Habits', icon: 'archive', route: '/archivedhabits' }
-        ],
-        mini: true,
-        right: null
-      }
-    },
-    computed: {
-      isLoggedIn() {
-        return this.$store.getters.isLoggedIn
-      }
-    },
+    return {
+      drawer: true,
+      items: [
+        //{ title: 'Home', icon: 'dashboard', route: router.routes.find((route) => {return route.name === 'Home' }).path },
+        { title: 'Habit List', icon: 'question_answer', route: '/habits' },
+        { title: 'Todays Habits', icon: 'today', route: '/todayshabits' },
+        { title: 'Templates', icon: 'folder', route: '/templates' },
+        { title: 'User Settings', icon: 'settings', route: '/user/settings' },
+        { title: 'Archived Habits', icon: 'archive', route: '/archivedhabits' }
+      ],
+      mini: true,
+      right: null
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    }
+  },
+  mounted() {
+    // check if current route is logged    
+  }
 }
 
 </script>

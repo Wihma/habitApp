@@ -82,7 +82,7 @@ export default {
       // properly
 
       if(this.habit.measureWUnit && this.amount === 0) {
-        alert('Amont cannot be 0');
+        alert('Amount cannot be 0');
 
         return null;
       } else {
@@ -97,12 +97,13 @@ export default {
             comment: 'A test description'
           }
         }).then(
-          console.log('success?')
+          () => {
+            console.log('success?')
+          }
         ).catch(
-          console.error('error')
+          (err) => console.error(err)
         );
-        this.initialState()
-      }      
+      }
     },
     initialState() {
       this.display = {

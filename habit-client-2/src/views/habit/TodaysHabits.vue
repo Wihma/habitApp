@@ -41,7 +41,7 @@ import HabitListItem from '@/components/habit/today-habit-list-item'
    computed: {
      habits() {
        // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.allUserHabits;
+       let tempHabits = this.$store.getters.getTodaysHabits;
        if(tempHabits !== undefined) {
          tempHabits.forEach((habit) => {
            habit.visible = true;
