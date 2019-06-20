@@ -22,21 +22,21 @@ export const auth = {
     loginRequest: (state) => {
       // make a login attempt and log
       // show spinner
-      state.pending = true;
+      state.pending = true
     },
     loginSuccess: (state) => {
-      state.pending = false;
-      state.user.isLoggedIn = true;
+      state.pending = false
+      state.user.isLoggedIn = true
     },
     setCurrentuserId: (state, userId) => {
-      if(localStorage.getItem('userId') !== null && localStorage.getItem('userId') !== '' && localStorage.getItem('userId').length > 5) {
-        state.user.userId = localStorage.getItem('userId');
+      if (localStorage.getItem('userId') !== null && localStorage.getItem('userId') !== '' && localStorage.getItem('userId').length > 5) {
+        state.user.userId = localStorage.getItem('userId')
       } else {
-        state.user.userId = userId;
+        state.user.userId = userId
       }
     },
     jwtActive: (state) => {
-      state.user.isLoggedIn = true;
+      state.user.isLoggedIn = true
     }
   },
   actions: {
@@ -46,15 +46,15 @@ export const auth = {
         userService.login(email, password)
           .then(
             (res) => {
-              commit('loginSuccess');
-              commit('setCurrentuserId', res.userId);
-              localStorage.setItem('jwt', res.token);
-              localStorage.setItem('userId', res.userId);
+              commit('loginSuccess')
+              commit('setCurrentuserId', res.userId)
+              localStorage.setItem('jwt', res.token)
+              localStorage.setItem('userId', res.userId)
 
-              resolve(res);
+              resolve(res)
             },
             (err) => {
-              reject(err);
+              reject(err)
             }
           )
           .catch(err => {

@@ -39,11 +39,11 @@ export default {
 
   },
   methods: {
-    goToHabit(_id) {
-      this.$router.push('habit/'+ _id)
+    goToHabit (_id) {
+      this.$router.push('habit/' + _id)
     }
   },
-  mounted() {
+  mounted () {
 
   }
 }

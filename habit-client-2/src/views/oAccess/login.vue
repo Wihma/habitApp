@@ -104,31 +104,29 @@ export default {
       }).then(
         (res) => {
           this.$router.push('/habits')
-
         },
         (err) => {
-          console.error({ text:'failed to log in', err:err });
+          console.error({ text: 'failed to log in', err: err })
           this.loginFailed.status = true
           this.loginFailed.text = 'Failed to login'
         }
       ).catch(() => {
         alert('rejected')
       })
-
     }
   },
-  mounted() {
-    var that = this;
-    window.addEventListener('keyup', function(event) {
+  mounted () {
+    var that = this
+    window.addEventListener('keyup', function (event) {
       if (event.keyCode === 13) {
         console.log(that)
-        that.validateForm();
+        that.validateForm()
       }
-    });
+    })
   },
-  created() {
-    const loggedIn = localStorage.getItem('userjwt');
-    if(loggedIn !== null && loggedIn !== null && loggedIn.length > 10) {
+  created () {
+    const loggedIn = localStorage.getItem('userjwt')
+    if (loggedIn !== null && loggedIn !== null && loggedIn.length > 10) {
       // this.$router.push('habitList');
     }
   }

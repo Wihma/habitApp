@@ -66,20 +66,20 @@ export default {
     menu: false
   }),
   computed: {
-    isLoggedIn() {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn
     }
   },
   methods: {
-    login() {
+    login () {
       this.$router.push('/login')
     },
-    logout() {
-      this.$store.dispatch('logout');
-      this.$router.push('/login');
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
     }
   },
-  mounted() {
+  mounted () {
     // check if current route is logged
   }
 }

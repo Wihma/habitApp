@@ -43,55 +43,55 @@
     </v-btn>
   </div>
 </template>
- <script>
+<script>
 
 import HabitListItem from '@/components/habit/habit-list-item'
 
- export default {
-   components: {
-      'habit-list-item': HabitListItem
-   },
-   data: () => ({
-     // habits data stubs
-     search: {
-       text: ''
-     }
-   }),
-   computed: {
-     habits() {
-       // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.allArchivedHabits;
+export default {
+  components: {
+    'habit-list-item': HabitListItem
+  },
+  data: () => ({
+    // habits data stubs
+    search: {
+      text: ''
+    }
+  }),
+  computed: {
+    habits () {
+      // make sure all habits are visible when retrieved from the store
+      let tempHabits = this.$store.getters.allArchivedHabits
 
-       tempHabits.forEach((habit) => {
-        habit.visible = true;
+      tempHabits.forEach((habit) => {
+        habit.visible = true
         habit.show = false
-      });
+      })
 
-       return tempHabits
-     }
-   },
-   methods: {
-     newHabit() {
-       // -1 equals new habit
-       this.$router.push('habit/-1')
-     }
-   },
-   watch: {
-     search: {
-       handler: function(search, oldSearch){
-         this.habits.forEach((habit) => {
-           if(habit.name.toLowerCase().indexOf(search.text.toLowerCase()) > -1) {
-             habit.visible = true
-           } else {
-             habit.visible = false
-           }
-         })
-       },
-       deep: true
-     }
-   }
- }
- </script>
+      return tempHabits
+    }
+  },
+  methods: {
+    newHabit () {
+      // -1 equals new habit
+      this.$router.push('habit/-1')
+    }
+  },
+  watch: {
+    search: {
+      handler: function (search, oldSearch) {
+        this.habits.forEach((habit) => {
+          if (habit.name.toLowerCase().indexOf(search.text.toLowerCase()) > -1) {
+            habit.visible = true
+          } else {
+            habit.visible = false
+          }
+        })
+      },
+      deep: true
+    }
+  }
+}
+</script>
 
 <style scoped>
 #createHabitButton{

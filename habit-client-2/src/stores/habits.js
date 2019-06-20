@@ -7,11 +7,11 @@ import Vue from 'vue'
 export const habits = {
   state: {
     newHabit: {
-      selectedWeekdays:[0, 1, 2, 3, 4, 5, 6],
-      time: "12:00",
+      selectedWeekdays: [0, 1, 2, 3, 4, 5, 6],
+      time: '12:00',
       active: true,
       measureWUnit: false,
-      measureTime: true,
+      measureTime: true
     },
     habits: [
       // {
@@ -72,25 +72,25 @@ export const habits = {
     //   return state.habits.filter(habit => habit.active === true)
     // },
     allUserHabits: (state) => {
-      if(Object.keys(state.habits).length > 0) {
+      if (Object.keys(state.habits).length > 0) {
         return state.habits.filter(habit => habit.active === true)
       }
     },
     allArchivedHabits: (state) => {
-      if(state.habits.lenght > 0) {
+      if (state.habits.lenght > 0) {
         return state.habits.filter(habit => habit.active === false)
       }
     },
     getHabitById: (state) => (_id) => {
       // id -1 equals new habit
-      if(_id === "-1") {
+      if (_id === '-1') {
         // here is a good place to set default values
         // return a clone of newHabit
 
-        let newHabit = JSON.stringify(state.newHabit);
-        return JSON.parse(newHabit);
+        let newHabit = JSON.stringify(state.newHabit)
+        return JSON.parse(newHabit)
       } else {
-          return state.habits.find(habit => habit._id === _id)
+        return state.habits.find(habit => habit._id === _id)
       }
     },
     getHabitPerformedId: (state) => (id) => {
@@ -113,11 +113,11 @@ export const habits = {
 
       // debugger // eslint-disable-line
 
-      let d = new Date();
-      let n = d.getDay();
+      let d = new Date()
+      let n = d.getDay()
 
-      let todaysHabits = state.habits;
-      if(todaysHabits.length < 1) {
+      let todaysHabits = state.habits
+      if (todaysHabits.length < 1) {
         return
       }
 
@@ -127,9 +127,9 @@ export const habits = {
             return parseInt(weekday) === n
           }
         )
-      );
+      )
 
-      todaysHabits = todaysHabits.filter(habit => habit.active === true);
+      todaysHabits = todaysHabits.filter(habit => habit.active === true)
 
       // todaysHabits = todaysHabits.filter((habit) => {
       //     let today = new Date().setHours(0,0,0,0);
@@ -154,47 +154,45 @@ export const habits = {
       //       return true
       //     }
       // })
-      todaysHabits.sort(function(a, b) {
-          return a.time > b.time
-      });
+      todaysHabits.sort(function (a, b) {
+        return a.time > b.time
+      })
       return todaysHabits
     }
   },
   mutations: {
-    getAllHabits:(state, habits) => {
-      state.habits = habits;
+    getAllHabits: (state, habits) => {
+      state.habits = habits
     },
-    setAllHabitsForUser:(state, habits) => {
-      state.habits = habits;
+    setAllHabitsForUser: (state, habits) => {
+      state.habits = habits
     },
     saveHabit: (state, habit) => {
       // filter out the habit based on habit._id and replace the values that differ
       // save and ensure should be the same
-      let habitIndex;
-      let allHabits = state.habits;
-      try{
-        habitIndex = allHabits.findIndex((h => h._id === habit._id));
+      let habitIndex
+      let allHabits = state.habits
+      try {
+        habitIndex = allHabits.findIndex(h => h._id === habit._id)
         if (habitIndex > -1) {
-          allHabits.splice(habitIndex, 1);
+          allHabits.splice(habitIndex, 1)
 
-          Vue.set(state, 'habits', habit);
+          Vue.set(state, 'habits', habit)
           // allHabits.push(habit)
         }
       } catch {
         // state.habits.push(habit);
-        Vue.set(state, 'habits', habit);
+        Vue.set(state, 'habits', habit)
       }
     },
     saveTodayPerformed: (state, payload) => {
-
-
-      let tmpHabitPerformed;
+      let tmpHabitPerformed
       // payload = {habitid: id, todayPerformed: todayPerformed}
       // if error create new todayPerformed
 
       try {
-          tmpHabitPerformed = state.habits.find(h => h._id === payload.habitId);
-          tmpHabitPerformed.daysPerformed.push(payload.dayPerformed)
+        tmpHabitPerformed = state.habits.find(h => h._id === payload.habitId)
+        tmpHabitPerformed.daysPerformed.push(payload.dayPerformed)
       } catch {
         // state.todayPerformed.push
         tmpHabitPerformed = {
@@ -203,17 +201,17 @@ export const habits = {
           days: []
         }
         tmpHabitPerformed.days.push(payload.dayPerformed)
-        state.habitsPerformed.push(tmpHabitPerformed);
+        state.habitsPerformed.push(tmpHabitPerformed)
       }
     },
     refreshTodaysHabits: (state) => {
-      let tmpHabits = state.habits;
-      state.habits = null;
-      state.habits = tmpHabits;
+      let tmpHabits = state.habits
+      state.habits = null
+      state.habits = tmpHabits
     },
     deleteHabit: (state, habitId) => {
       // find index of deleted habit and remove it
-      console.log('delete habit');
+      console.log('delete habit')
       state.habits.splice(state.habits.findIndex((habit) => {
         return habit._id === habitId
       }), 1)
@@ -225,50 +223,49 @@ export const habits = {
       return habitService.getAll()
         .then((habits) => {
           // console.log({message: 'in the store', habits: habits})
-          commit('setAllHabits', habits);
-        });
+          commit('setAllHabits', habits)
+        })
     },
     getAllHabitsForUser ({ dispatch, commit, rootState, rootGetters }) {
       return habitService.getAllHabitsForUser(rootGetters.currentUserId)
         .then((habits) => {
-          commit('setAllHabitsForUser', habits);
-        });
+          commit('setAllHabitsForUser', habits)
+        })
     },
-    newHabit ({ dispatch, commit, rootState, rootGetters }, {habit}) {
-
-      console.log({userId: rootGetters.currentUserId, habit: habit});
+    newHabit ({ dispatch, commit, rootState, rootGetters }, { habit }) {
+      console.log({ userId: rootGetters.currentUserId, habit: habit })
       return habitService.new(rootGetters.currentUserId, habit)
         .then(
-          commit('saveHabit', {habit: habit})
-        );
+          commit('saveHabit', { habit: habit })
+        )
     },
-    updateHabit ({ dispatch, commit }, {habit}) {
+    updateHabit ({ dispatch, commit }, { habit }) {
       // console.log({location: 'habitStore', action: 'saveHabit'})
       // commit('saveHabit', habit);
 
       return habitService.update(habit)
         .then(
-          commit('saveHabit', {habit: habit})
-        );
+          commit('saveHabit', { habit: habit })
+        )
 
       // return new Promise((resolve, reject) => {
       //   resolve('OK')
       // });
     },
-    saveTodayPerformed ({ dispatch, commit }, {habitId, dayPerformed}) {
+    saveTodayPerformed ({ dispatch, commit }, { habitId, dayPerformed }) {
       return habitService.performed(habitId, dayPerformed)
         .then(
-          commit('saveTodayPerformed', {habitId: habitId, dayPerformed: dayPerformed})
-        );
+          commit('saveTodayPerformed', { habitId: habitId, dayPerformed: dayPerformed })
+        )
     },
-    deleteHabit ({ dispatch, commit }, {habitId}) {
-      console.log('action delete habit');
+    deleteHabit ({ dispatch, commit }, { habitId }) {
+      console.log('action delete habit')
       // commit('deleteHabit', {habitId: habitId})
 
       return habitService.delete(habitId)
         .then(
-          commit('deleteHabit', {habitId: habitId})
-        );
+          commit('deleteHabit', { habitId: habitId })
+        )
     }
   }
 }

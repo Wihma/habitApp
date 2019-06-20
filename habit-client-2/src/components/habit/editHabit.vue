@@ -147,93 +147,93 @@
     </v-container>
   </div>
 </template>
- <script>
- export default {
-   props: {
-     habit: {
-       type: Object
-     }
-   },
-   components: {
+<script>
+export default {
+  props: {
+    habit: {
+      type: Object
+    }
+  },
+  components: {
 
-   },
-   data: () => ({
-     // habits data stubs
-     show: false,
-     isNewHabit: false,
-     valid: false,
-     rules: {
-       name: [
-         v => !!v || 'Name is required',
-       ],
-       description: [
-         v => !!v || 'Description is required',
-       ],
-     },
-     isNew: false,
-     weekDays: [
-       {
-         text:'Sunday',
-         value: 0
-       },
-       {
-         text:'Monday',
-         value: 1
-       },
-       {
-         text:'Tuesday',
-         value: 2
-       },
-       {
-         text:'Wednesday',
-         value: 3
-       },
-       {
-         text:'Thursday',
-         value: 4
-       },
-       {
-         text:'Friday',
-         value: 5
-       },
-       {
-         text:'Saturday',
-         value: 6
-       }
-     ]
-   }),
-   methods: {
-     saveHabit() {
-       if(this.isNewHabit){
-         this.$store.dispatch('newHabit', { habit: this.habit })
-           .then((res) => {
-             this.$router.push('/habits');
-           });
-       } else {
-         this.$store.dispatch('updateHabit', { habit: this.habit })
+  },
+  data: () => ({
+    // habits data stubs
+    show: false,
+    isNewHabit: false,
+    valid: false,
+    rules: {
+      name: [
+        v => !!v || 'Name is required'
+      ],
+      description: [
+        v => !!v || 'Description is required'
+      ]
+    },
+    isNew: false,
+    weekDays: [
+      {
+        text: 'Sunday',
+        value: 0
+      },
+      {
+        text: 'Monday',
+        value: 1
+      },
+      {
+        text: 'Tuesday',
+        value: 2
+      },
+      {
+        text: 'Wednesday',
+        value: 3
+      },
+      {
+        text: 'Thursday',
+        value: 4
+      },
+      {
+        text: 'Friday',
+        value: 5
+      },
+      {
+        text: 'Saturday',
+        value: 6
+      }
+    ]
+  }),
+  methods: {
+    saveHabit () {
+      if (this.isNewHabit) {
+        this.$store.dispatch('newHabit', { habit: this.habit })
           .then((res) => {
-            this.$router.push('/habits');
-          });
-       }
-     },
-     deleteHabit(){
-       // console.log('dispatching delete habit')
-       if(confirm('Are you sure?')){
-          this.$store.dispatch('deleteHabit', {habitId: this.habit._id})
-            .then(() => {
-              this.$router.push('/habits')
-            })
-       }
-     }
-   },
-   created() {
-     // check if habit is new
-     if(this.$route.params.id === "-1") {
-       this.isNewHabit = true
-     }
-   }
- }
- </script>
+            this.$router.push('/habits')
+          })
+      } else {
+        this.$store.dispatch('updateHabit', { habit: this.habit })
+          .then((res) => {
+            this.$router.push('/habits')
+          })
+      }
+    },
+    deleteHabit () {
+      // console.log('dispatching delete habit')
+      if (confirm('Are you sure?')) {
+        this.$store.dispatch('deleteHabit', { habitId: this.habit._id })
+          .then(() => {
+            this.$router.push('/habits')
+          })
+      }
+    }
+  },
+  created () {
+    // check if habit is new
+    if (this.$route.params.id === '-1') {
+      this.isNewHabit = true
+    }
+  }
+}
+</script>
 
 <style scoped>
 

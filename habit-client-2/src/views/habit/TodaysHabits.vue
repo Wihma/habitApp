@@ -24,51 +24,51 @@
     </v-btn>
   </div>
 </template>
- <script>
+<script>
 
 import HabitListItem from '@/components/habit/today-habit-list-item'
 
- export default {
-   components: {
-      'habit-list-item': HabitListItem
-   },
-   data: () => ({
-     // habits data stubs
-     search: {
-       text: ''
-     }
-   }),
-   computed: {
-     habits() {
-       // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.getTodaysHabits;
-       if(tempHabits !== undefined) {
-         tempHabits.forEach((habit) => {
-           habit.visible = true;
-           habit.show = false
-         });
+export default {
+  components: {
+    'habit-list-item': HabitListItem
+  },
+  data: () => ({
+    // habits data stubs
+    search: {
+      text: ''
+    }
+  }),
+  computed: {
+    habits () {
+      // make sure all habits are visible when retrieved from the store
+      let tempHabits = this.$store.getters.getTodaysHabits
+      if (tempHabits !== undefined) {
+        tempHabits.forEach((habit) => {
+          habit.visible = true
+          habit.show = false
+        })
 
-         return tempHabits
-       } else {
-         return [];
-       }
-       // let tempHabits = this.$store.getters.getAllHabitsForUser;
-     }
-   },
-   methods: {
-     newHabit() {
-       // -1 equals new habit
-       this.$router.push('habit/-1')
-     }
-   },
-   watch: {
+        return tempHabits
+      } else {
+        return []
+      }
+      // let tempHabits = this.$store.getters.getAllHabitsForUser;
+    }
+  },
+  methods: {
+    newHabit () {
+      // -1 equals new habit
+      this.$router.push('habit/-1')
+    }
+  },
+  watch: {
 
-   },
-   beforeUpdate(){
-     console.log('todays habits updates')
-   }
- }
- </script>
+  },
+  beforeUpdate () {
+    console.log('todays habits updates')
+  }
+}
+</script>
 
 <style scoped>
 #createHabitButton{

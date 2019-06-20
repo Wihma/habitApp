@@ -66,18 +66,16 @@
       </v-navigation-drawer>
 </template>
 
-
 <script>
 
-//const router = require('@/routers/router');
-
+// const router = require('@/routers/router');
 
 export default {
   data () {
     return {
       drawer: true,
       items: [
-        //{ title: 'Home', icon: 'dashboard', route: router.routes.find((route) => {return route.name === 'Home' }).path },
+        // { title: 'Home', icon: 'dashboard', route: router.routes.find((route) => {return route.name === 'Home' }).path },
         { title: 'Habit List', icon: 'question_answer', route: '/habits' },
         { title: 'Todays Habits', icon: 'today', route: '/todayshabits' },
         { title: 'Templates', icon: 'folder', route: '/templates' },
@@ -89,12 +87,12 @@ export default {
     }
   },
   computed: {
-    isLoggedIn() {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn
     }
   },
-  mounted() {
-    // check if current route is logged    
+  mounted () {
+    // check if current route is logged
   }
 }
 

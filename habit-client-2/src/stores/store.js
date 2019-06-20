@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersist from 'vuex-persist'
 
+import { auth } from './auth'
+import { habits } from './habits'
+
 Vue.use(Vuex)
 
 const vuexLocalStorage = new VuexPersist({
@@ -12,9 +15,6 @@ const vuexLocalStorage = new VuexPersist({
   // Function that passes a mutation and lets you decide if it should update the state in localStorage.
   // filter: mutation => (true)
 })
-
-import { auth } from './auth'
-import { habits } from './habits'
 
 export default new Vuex.Store({
   modules: {

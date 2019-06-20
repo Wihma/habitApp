@@ -46,8 +46,8 @@ export default {
       complete: false
     },
     time: {
-        start: '',
-        stop: ''
+      start: '',
+      stop: ''
     },
     amount: 0,
     amountRules: [
@@ -59,35 +59,35 @@ export default {
 
   },
   methods: {
-    start(id) {
-      this.display.start = false;
-      this.display.finish = true;
-      this.time.start = new Date().getTime();
+    start (id) {
+      this.display.start = false
+      this.display.finish = true
+      this.time.start = new Date().getTime()
     },
-    finish() {
-      this.display.finish = false;
+    finish () {
+      this.display.finish = false
 
-      if(this.habit.measureWUnit) {
-        this.display.addUnit = true;
-        this.display.complete = true;
+      if (this.habit.measureWUnit) {
+        this.display.addUnit = true
+        this.display.complete = true
       } else {
-        this.complete();
+        this.complete()
       }
 
-      this.time.stop = new Date().getTime();
+      this.time.stop = new Date().getTime()
       // alert((this.time.stop - this.time.start) / 1000)
     },
-    complete() {
+    complete () {
       // seems like you need to hide the text input for habit.visible to work
       // properly
 
-      if(this.habit.measureWUnit && this.amount === 0) {
-        alert('Amount cannot be 0');
+      if (this.habit.measureWUnit && this.amount === 0) {
+        alert('Amount cannot be 0')
 
-        return null;
+        return null
       } else {
-        this.display.addUnit = false;
-        this.habit.visible = false;
+        this.display.addUnit = false
+        this.habit.visible = false
 
         this.$store.dispatch('saveTodayPerformed', {
           habitId: this.habit._id,
@@ -102,10 +102,10 @@ export default {
           }
         ).catch(
           (err) => console.error(err)
-        );
+        )
       }
     },
-    initialState() {
+    initialState () {
       this.display = {
         start: true,
         finish: false,
@@ -113,15 +113,14 @@ export default {
         complete: false
       }
       this.time = {
-          start: '',
-          stop: ''
+        start: '',
+        stop: ''
       }
       this.amount = 0
-
     }
   },
-  beforeMounted() {
-    this.displayFinish = !this.habit.measureTime;
+  beforeMounted () {
+    this.displayFinish = !this.habit.measureTime
   }
 }
 </script>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import store from '@/stores/store' // your vuex store
-//import Home from '@/views/old/Home.vue'
+// import Home from '@/views/old/Home.vue'
 
 // middleware
 import log from './middleware/global/log'
@@ -17,10 +17,10 @@ const routerPaths = {
 
 const authCheck = (to, from, next) => {
   if (!store.getters.isloggedin) {
-    if(localStorage.getItem('jwt')) {
-      store.commit('jwtActive');
-      store.commit('setCurrentuserId');
-      if(to.name === routerPaths.Login) {
+    if (localStorage.getItem('jwt')) {
+      store.commit('jwtActive')
+      store.commit('setCurrentuserId')
+      if (to.name === routerPaths.Login) {
         next('/habits')
       }
     };
@@ -127,9 +127,9 @@ const router = new Router({
       meta: {
         middleware: globalMiddleware
       }
-    },
+    }
   ]
-});
+})
 /*
 router.beforeEach((to, from, next) => {
 

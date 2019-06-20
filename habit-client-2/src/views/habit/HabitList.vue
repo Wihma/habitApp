@@ -42,61 +42,61 @@
     </v-btn>
   </div>
 </template>
- <script>
+<script>
 
 import HabitListItem from '@/components/habit/habit-list-item'
 export default {
-   components: {
-      'habit-list-item': HabitListItem
-   },
-   data: () => ({
-     // habits data stubs
-     search: {
-       text: ''
-     }
-   }),
-   computed: {
-     habits() {
-       // make sure all habits are visible when retrieved from the store
-       let tempHabits = this.$store.getters.allUserHabits;
-       if(tempHabits !== undefined) {
-         tempHabits.forEach((habit) => {
-           habit.visible = true;
-           habit.show = false
-         });
+  components: {
+    'habit-list-item': HabitListItem
+  },
+  data: () => ({
+    // habits data stubs
+    search: {
+      text: ''
+    }
+  }),
+  computed: {
+    habits () {
+      // make sure all habits are visible when retrieved from the store
+      let tempHabits = this.$store.getters.allUserHabits
+      if (tempHabits !== undefined) {
+        tempHabits.forEach((habit) => {
+          habit.visible = true
+          habit.show = false
+        })
 
-         return tempHabits
-       } else {
-         return [];
-       }
-       // let tempHabits = this.$store.getters.getAllHabitsForUser;
-     }
-   },
-   methods: {
-     newHabit() {
-       // -1 equals new habit
-       this.$router.push('habit/-1')
-     }
-   },
-   beforeMount(){
-     this.$store.dispatch('getAllHabitsForUser')
-   },
-   watch: {
-     search: {
-       handler: function(search, oldSearch){
-         this.habits.forEach((habit) => {
-           if(habit.name.toLowerCase().indexOf(search.text.toLowerCase()) > -1) {
-             habit.visible = true
-           } else {
-             habit.visible = false
-           }
-         })
-       },
-       deep: true
-     }
-   }
- }
- </script>
+        return tempHabits
+      } else {
+        return []
+      }
+      // let tempHabits = this.$store.getters.getAllHabitsForUser;
+    }
+  },
+  methods: {
+    newHabit () {
+      // -1 equals new habit
+      this.$router.push('habit/-1')
+    }
+  },
+  beforeMount () {
+    this.$store.dispatch('getAllHabitsForUser')
+  },
+  watch: {
+    search: {
+      handler: function (search, oldSearch) {
+        this.habits.forEach((habit) => {
+          if (habit.name.toLowerCase().indexOf(search.text.toLowerCase()) > -1) {
+            habit.visible = true
+          } else {
+            habit.visible = false
+          }
+        })
+      },
+      deep: true
+    }
+  }
+}
+</script>
 
 <style scoped>
 #createHabitButton{
