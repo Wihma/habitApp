@@ -4,6 +4,8 @@ import VuexPersist from 'vuex-persist'
 
 import { auth } from './auth'
 import { habits } from './habits'
+import { layout } from './layout'
+// import { layout } from './layout'
 
 Vue.use(Vuex)
 
@@ -19,7 +21,9 @@ const vuexLocalStorage = new VuexPersist({
 export default new Vuex.Store({
   modules: {
     auth,
-    habits
+    habits,
+    // ,layout
+    layout
   },
   state: {
 

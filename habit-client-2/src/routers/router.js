@@ -16,6 +16,7 @@ const routerPaths = {
 }
 
 const authCheck = (to, from, next) => {
+  console.log('authCheck')
   if (!store.getters.isloggedin) {
     if (localStorage.getItem('jwt')) {
       store.commit('jwtActive')

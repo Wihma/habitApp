@@ -10,9 +10,13 @@ const Habits = mongoose.model('Habits').schema; // should be renamed to habit
 const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
-  email       : {type: String, unique: true, required: true, dropDups: true},
-  salt        : {type: String, required: true},
-  hash        : {type: String, required: true},
+  email           : {type: String, unique: true, required: true, dropDups: true},
+  username        : {type: String, unique: true, dropDups: true},
+  firstName       : {type: String},
+  lastName        : {type: String},
+  displayUserName : {type: Boolean, default: false},
+  salt            : {type: String, required: true},
+  hash            : {type: String, required: true},
   // habits      : [Habits]
   habits      : [{
     type: ObjectId,

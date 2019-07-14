@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+# Acc/Prod build
+wwwroot/
+
 # local env files
 .env.local
 .env.*.local

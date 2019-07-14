@@ -9,7 +9,7 @@
       <span>Login</span>
     </v-btn>
 
-    <v-menu
+    <!-- <v-menu
     v-if="isLoggedIn"
     v-model="menu"
     :close-on-content-click="false"
@@ -24,9 +24,14 @@
       icon
     >
      <v-icon>person</v-icon>
-    </v-btn>
+    </v-btn> -->
 
-    <v-card>
+    <user-icon-popup
+      username="Marc Wihlstrand"
+    >
+    </user-icon-popup>
+
+    <!-- <v-card>
       <v-list>
         <v-list-tile avatar>
           <v-list-tile-avatar>
@@ -54,16 +59,19 @@
         <v-btn flat @click="menu = false">Cancel</v-btn>
         <v-btn color="primary" flat @click="logout">Logout</v-btn>
       </v-card-actions>
-    </v-card>
-  </v-menu>
+    </v-card> -->
+  <!-- </v-menu> -->
   </v-toolbar>
 </template>
-
 <script>
 
+import UserIconPopup from '@/components/user/userIconPopup'
+
 export default {
+  components: {
+    'user-icon-popup': UserIconPopup
+  },
   data: () => ({
-    menu: false
   }),
   computed: {
     isLoggedIn () {
@@ -77,6 +85,9 @@ export default {
     logout () {
       this.$store.dispatch('logout')
       this.$router.push('/login')
+    },
+    menu () {
+      return this.$store.getters.userIconMenuVisibility
     }
   },
   mounted () {
