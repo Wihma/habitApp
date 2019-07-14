@@ -37,6 +37,7 @@ router.get('/getAllHabitsForUser', (req, res, next) => {
   console.log({'message': 'getAllHabitsForUser', userId: req.query.userId});
   console.log(req.body);
   if(!req.query.userId || req.query.userId === '' || req.query.userId === null) {
+    console.log('should not enter here');
     res.status(200).json([]);
   }
 
